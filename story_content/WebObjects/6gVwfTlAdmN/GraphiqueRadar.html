@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Graphique Radar</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <canvas id="radarChart"></canvas>
+    <script>
+        function getStorylineVar(varName) {
+            try {
+                return window.parent.GetPlayer().GetVar(varName);
+            } catch (error) {
+                console.error("Erreur lors de la récupération de la variable", varName, error);
+                return 0;
+            }
+        }
+
+        var ctx = document.getElementById('radarChart').getContext('2d');
+        var radarChart = new Chart(ctx, {
+            type: 'radar',
+            data: {
+                labels: ['Réaliste', 'Investigateur', 'Artiste', 'Social', 'Entreprenant', 'Conventionnel'],
+                datasets: [{
+                    label: 'Résultats du Test',
+                    data: [
+                        getStorylineVar('Réaliste'), 
+                        getStorylineVar('Investigateur'), 
+                        getStorylineVar('Artiste'), 
+                        getStorylineVar('Social'), 
+                        getStorylineVar('Entreprenant'), 
+                        getStorylineVar('Conventionnel')
+                    ].map(value => Math.round(value * 100) / 100),
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                maintainAspectRatio: true,
+                aspectRatio: 1.0,  // Ratio pour un affichage carré
+                scales: {
+                    r: {
+                        suggestedMin: 0,
+                        suggestedMax: 50
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            font: {
+                                size: 16,
+                                weight: 'bold'
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': ' + context.raw + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
