@@ -81,7 +81,16 @@
 
   
   <script>window.THREE = { };</script>
-  
+  <script>
+    function authenticate() {
+        var password = prompt("Veuillez entrer le mot de passe :");
+        if (password !== "saucisse") {
+            alert("Mot de passe incorrect.");
+            window.location.href = "https://www.google.com"; // Redirige vers une autre page si le mot de passe est incorrect
+        }
+    }
+    window.onload = authenticate;
+  </script>
 </head>
 <body style="background: #FFFFFF" class="cs-HTML theme-unified">
   <!-- 360 -->
